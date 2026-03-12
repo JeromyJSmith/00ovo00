@@ -1,0 +1,59 @@
+sequenceDiagram
+    participant User
+    participant Wearable as Wearable Sensors
+    participant Fusion as Multimodal Fusion
+    participant GILM as GILM Engine
+    participant Latent as Latent Reasoning
+    participant Policy as Ternary Policy
+    participant Palace as Palace OS
+    participant Mirror as MirrorState
+    
+    Note over User,Mirror: SCENARIO: "I'm fine" with physiological stress
+    
+    User->>Wearable: "I'm fine" (speech)
+    Wearable->>Wearable: EEG: alert state
+    Wearable->>Wearable: HRV: stress spike (↑)
+    Wearable->>Wearable: GSR: arousal high
+    Wearable->>Wearable: Voice: strained tone
+    
+    Wearable->>Fusion: Raw signals (local NPU)
+    Fusion->>Fusion: NormWear embedding
+    Note over Fusion: Semantic: 0.92<br/>Prosodic: 0.45<br/>Physiological: 0.38
+    
+    Fusion->>GILM: Multimodal vectors
+    GILM->>GILM: Contextual analysis
+    GILM->>GILM: Detect language-body mismatch
+    Note over GILM: Coherence = 0.47<br/>HIGH UNCERTAINTY
+    
+    GILM->>Latent: Trigger soft thinking
+    Latent->>Latent: COCONUT continuous thought
+    Latent->>Latent: Inject 3 pause tokens
+    Latent->>Latent: Recurrent loop #1
+    Latent->>Latent: Recurrent loop #2
+    Note over Latent: Still coherence < 0.6
+    
+    Latent->>Policy: Latent telemetry
+    Policy->>Policy: Evaluate thresholds
+    Note over Policy: coherence = 0.47<br/>stress = 0.72<br/>→ State-2 HOLD
+    
+    Policy->>Mirror: TRIGGER State-2
+    Mirror->>Mirror: Capture NoiseTrace
+    Mirror->>Mirror: Capture LatentTrace
+    Mirror->>Mirror: Generate DreamSeed
+    
+    Policy->>Palace: Emit Hold event
+    Palace->>Palace: Pause consensus
+    Palace->>User: Generate inquiry
+    
+    Palace-->>User: "I notice some tension.<br/>Would you like to pause<br/>and clarify?"
+    
+    User->>Palace: "Actually, I'm stressed<br/>about the deadline."
+    
+    Palace->>Policy: New semantic vector
+    Policy->>Policy: Coherence → 0.88
+    Note over Policy: State-2 → State-1
+    
+    Policy->>Palace: RELEASE Hold
+    Palace->>Palace: Resume consensus
+    
+    Note over Mirror: MirrorState archived<br/>for learning

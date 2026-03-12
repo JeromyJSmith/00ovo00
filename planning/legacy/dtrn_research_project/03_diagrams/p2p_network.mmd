@@ -1,0 +1,75 @@
+```mermaid
+graph TB
+    subgraph Network["<b>DISTRIBUTED TERNARY RESEARCH NETWORK (P2P)</b>"]
+        subgraph Node1["Node 1: University Lab"]
+            GPU1["🖥 GPU Cluster"]
+            Neo1[("🗀 Neo4j Replica")]
+            Agent1["🤖 Research Agents"]
+        end
+        
+        subgraph Node2["Node 2: Corporate R&D"]
+            GPU2["🖥 GPU Cluster"]
+            Neo2[("🗀 Neo4j Replica")]
+            Agent2["🤖 Research Agents"]
+        end
+        
+        subgraph Node3["Node 3: Independent Researcher"]
+            CPU3["💻 CPU Workstation"]
+            Neo3[("🗀 Neo4j Replica")]
+            Agent3["🤖 Research Agents"]
+        end
+        
+        subgraph Node4["Node 4: AI Safety Org"]
+            GPU4["🖥 GPU Cluster"]
+            Neo4[("🗀 Neo4j Replica")]
+            Agent4["🤖 Research Agents"]
+        end
+    end
+
+    subgraph Coordination["<b>COORDINATION LAYER</b>"]
+        DHT["📇 Distributed Hash Table<br/>(Peer Discovery)"]
+        ConsensusProtocol["⚡ CGT Consensus Protocol<br/>(Ternary State Sync)"]
+        IPFS["📦 IPFS<br/>(Data Replication)"]
+    end
+
+    subgraph GlobalState["<b>GLOBAL CONSENSUS STATE</b>"]
+        MerkleRoot["🌳 Merkle Root<br/>(State Verification)"]
+        GRAIL_Distributed["🗀 GRAIL<br/>(Distributed Knowledge Graph)"]
+        StateSync["🔄 State Synchronization"]
+    end
+
+    %% P2P Connections
+    Node1 <-->|"Peer Connection"| Node2
+    Node2 <-->|"Peer Connection"| Node3
+    Node3 <-->|"Peer Connection"| Node4
+    Node4 <-->|"Peer Connection"| Node1
+    Node1 <-->|"Cross Connection"| Node3
+    Node2 <-->|"Cross Connection"| Node4
+
+    %% Coordination
+    Node1 & Node2 & Node3 & Node4 --> DHT
+    DHT --> ConsensusProtocol
+    ConsensusProtocol --> IPFS
+
+    %% Global State
+    IPFS --> MerkleRoot
+    MerkleRoot --> GRAIL_Distributed
+    GRAIL_Distributed --> StateSync
+    StateSync --> Node1 & Node2 & Node3 & Node4
+
+    %% Data Flow
+    Agent1 -->|"Submit Research"| Neo1
+    Agent2 -->|"Submit Research"| Neo2
+    Agent3 -->|"Submit Research"| Neo3
+    Agent4 -->|"Submit Research"| Neo4
+
+    Neo1 & Neo2 & Neo3 & Neo4 -.->|"Replicate"| GRAIL_Distributed
+
+    ClassDef node fill:#e6f2ff,stroke:#0066cc,stroke-width:2
+    ClassDef coord fill:#fff3e6,stroke:#ff9900,stroke-width:2
+    ClassDef global fill:#e6ffed,stroke:#009944,stroke-width:3
+
+    class Node1,Node2,Node3,Node4,GPU1,GPU2,CPU3,GPU4,Neo1,Neo2,Neo3,Neo4,Agent1,Agent2,Agent3,Agent4 node;
+    class DHT,ConsensusProtocol,IPFS coord;
+    class MerkleRoot,GRAIL_Distributed,StateSync global;
+```

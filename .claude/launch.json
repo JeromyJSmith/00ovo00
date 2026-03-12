@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "global-ohm-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "3737"],
+      "port": 3737,
+      "cwd": "global-ohm"
+    }
+  ]
+}

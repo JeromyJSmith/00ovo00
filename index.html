@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>00ovo00 — Research Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --surface: #1a1a24;
+      --surface-2: #22222e;
+      --border: #2d2d3a;
+      --text: #e4e4ed;
+      --text-muted: #8888a0;
+      --accent: #7c6aef;
+      --accent-glow: rgba(124, 106, 239, 0.15);
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --cyan: #22d3ee;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 320px;
+      min-width: 320px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-header .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .search-box {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .search-box input::placeholder { color: var(--text-muted); }
+
+    .file-tree {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .file-tree::-webkit-scrollbar { width: 6px; }
+    .file-tree::-webkit-scrollbar-track { background: transparent; }
+    .file-tree::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .tree-section {
+      margin-bottom: 2px;
+    }
+
+    .tree-section-header {
+      display: flex;
+      align-items: center;
+      padding: 6px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    .tree-section-header:hover { color: var(--text); }
+
+    .tree-section-header .arrow {
+      margin-right: 6px;
+      font-size: 10px;
+      transition: transform 0.15s;
+    }
+
+    .tree-section-header.collapsed .arrow { transform: rotate(-90deg); }
+
+    .tree-section-items { padding-left: 20px; }
+    .tree-section-header.collapsed + .tree-section-items { display: none; }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      padding: 4px 16px 4px 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 1px 8px;
+      transition: all 0.12s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tree-item:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .tree-item.active {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .tree-item .icon {
+      margin-right: 8px;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .tree-item .badge {
+      margin-left: auto;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .badge-symbiquity { background: rgba(34,211,238,0.15); color: var(--cyan); }
+    .badge-jero { background: rgba(124,106,239,0.15); color: var(--accent); }
+    .badge-mixed { background: rgba(251,191,36,0.15); color: var(--amber); }
+    .badge-deprecated { background: rgba(248,113,113,0.15); color: var(--red); }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .main-header {
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .breadcrumb span { color: var(--text); font-weight: 500; }
+
+    .stats {
+      margin-left: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+    }
+
+    .content::-webkit-scrollbar { width: 6px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Welcome screen */
+    .welcome {
+      max-width: 700px;
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    .welcome h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .quick-link {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .quick-link:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .quick-link .ql-icon { font-size: 28px; margin-bottom: 8px; }
+    .quick-link .ql-title { font-size: 13px; font-weight: 600; }
+    .quick-link .ql-count { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Markdown rendering */
+    .md-render {
+      max-width: 800px;
+      line-height: 1.7;
+    }
+
+    .md-render h1 { font-size: 28px; font-weight: 700; margin: 24px 0 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .md-render h2 { font-size: 22px; font-weight: 600; margin: 20px 0 12px; color: var(--accent); }
+    .md-render h3 { font-size: 17px; font-weight: 600; margin: 16px 0 8px; }
+    .md-render p { margin: 8px 0; color: var(--text); }
+    .md-render a { color: var(--cyan); text-decoration: none; }
+    .md-render a:hover { text-decoration: underline; }
+    .md-render ul, .md-render ol { padding-left: 24px; margin: 8px 0; }
+    .md-render li { margin: 4px 0; }
+    .md-render blockquote { border-left: 3px solid var(--accent); padding: 8px 16px; margin: 12px 0; background: var(--surface); border-radius: 0 6px 6px 0; color: var(--text-muted); }
+    .md-render code { font-family: 'JetBrains Mono', monospace; background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    .md-render pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+    .md-render pre code { background: none; padding: 0; }
+    .md-render table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    .md-render th, .md-render td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 13px; }
+    .md-render th { background: var(--surface-2); font-weight: 600; }
+    .md-render hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .md-render img { max-width: 100%; border-radius: 8px; }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      color: var(--text-muted);
+    }
+
+    .error-msg {
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      color: var(--red);
+      font-size: 14px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; min-width: unset; height: auto; position: relative; max-height: 50vh; }
+      .quick-links { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>00ovo00</h1>
+      <div class="subtitle">Research Portal · <span id="file-count">0</span> documents</div>
+    </div>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search files…" autocomplete="off">
+    </div>
+    <nav class="file-tree" id="file-tree"></nav>
+  </aside>
+
+  <main class="main">
+    <header class="main-header">
+      <div class="breadcrumb" id="breadcrumb">Select a file to view</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-value" id="stat-docs">0</div><div class="stat-label">Documents</div></div>
+        <div class="stat"><div class="stat-value">7</div><div class="stat-label">Sections</div></div>
+        <div class="stat"><div class="stat-value">24</div><div class="stat-label">Proposals</div></div>
+      </div>
+    </header>
+    <div class="content" id="content">
+      <div class="welcome" id="welcome">
+        <h2>00ovo00 Research Portal</h2>
+        <p>Navigate the complete research ecosystem. Click any document in the sidebar to view its rendered content. Use the search box to filter files.</p>
+        <div class="quick-links" id="quick-links"></div>
+      </div>
+      <div class="md-render hidden" id="md-render"></div>
+    </div>
+  </main>
+
+  <script>
+    // File tree data
+    const fileTree = {
+      "📚 docs": {
+        icon: "📚",
+        children: {
+          "agents": {
+            icon: "🤖",
+            files: [
+              { name: "README.md", path: "docs/agents/README.md" },
+              { name: "AI Agent Thread Patterns", path: "docs/agents/AI Agent Thread Patterns — Strategic Workflows d1c1ad7d3d0844cf8e9be3074eaad694.md" },
+              { name: "Base Thread Lab — T0", path: "docs/agents/Base Thread Lab — T0 da5a8fce50664dec81493eadbf5a82f3.md" },
+              { name: "P Thread — Parallel", path: "docs/agents/P Thread Lab — Parallel Execution fde9f627d7464fa4978205686b295e43.md" },
+              { name: "B Thread — Meta", path: "docs/agents/B Thread Lab — Meta Orchestration ab4145e4d17d4d19ade9791b805ad968.md" },
+              { name: "C Thread — Chained", path: "docs/agents/C Thread Lab — Chained Checkpoints e8ee18936ae947fba6282179090a905e.md" },
+              { name: "F Thread — Fusion", path: "docs/agents/F Thread Lab — Fusion Patterns 5350f095a6714d2ebbad7f7ed10eff4a.md" },
+              { name: "L Thread — Long-Running", path: "docs/agents/L Thread Lab — Long-Running Autonomy 6f62574e5d3947678dcea60451b0325a.md" },
+              { name: "Z Thread — Zero-Touch", path: "docs/agents/Z Thread Lab — Zero-Touch Endgame 096fd79cecce483c9574839608937f40.md" },
+              { name: "Thread Consultant", path: "docs/agents/Thread Consultant — Selection Framework b6adda268a35408e888efc800d01b7e1.md" },
+              { name: "Constraint Agents", path: "docs/agents/Constraint Agents 19cc487604f48098917cc440fa383cee.md" },
+              { name: "ROME Super Agent", path: "docs/agents/ROME_SUPER_AGENT.md" }
+            ]
+          },
+          "analysis": {
+            icon: "📊",
+            files: [
+              { name: "Deep Analysis — Two Transcripts", path: "docs/analysis/DEEP_ANALYSIS_Two_Transcripts.md" },
+              { name: "Research Matrix — Ternary", path: "docs/analysis/RESEARCH_MATRIX_Ternary_Concepts.md" },
+              { name: "Synthegent Integration", path: "docs/analysis/SYNTHEGENT_INTEGRATION_ANALYSIS.md" },
+              { name: "NotebookLM Analysis", path: "docs/analysis/notebookLM_analysis.md" }
+            ]
+          },
+          "concepts": {
+            icon: "💡",
+            files: [
+              { name: "Ternary Pyramid Geometry", path: "docs/concepts/ternary_pyramid_geometry.md", badge: "symbiquity" },
+              { name: "Phonetic Chain Math", path: "docs/concepts/phonetic_chain_math.md", badge: "symbiquity" },
+              { name: "ADSR Transfer Function", path: "docs/concepts/adsr_universal_transfer_function.md", badge: "mixed" },
+              { name: "NOW Phonetic Filter", path: "docs/concepts/now_phonetic_filter_sweep.md", badge: "mixed" },
+              { name: "GSNI Proximity Resonance", path: "docs/concepts/gsni_proximity_resonance.md", badge: "mixed" },
+              { name: "80% Resonance Lock", path: "docs/concepts/80_percent_resonance_lock.md", badge: "mixed" },
+              { name: "Collective Intelligence", path: "docs/concepts/collective_intelligence_ci.md", badge: "mixed" },
+              { name: "Prayer & Resonance", path: "docs/concepts/prayer_and_resonance.md", badge: "mixed" },
+              { name: "State-2 Implementation Spec", path: "docs/concepts/state2_implementation_spec.md", badge: "jero" },
+              { name: "BitNet Ternary Weights", path: "docs/concepts/bitnet_ternary_weights.md", badge: "jero" },
+              { name: "Global Ohm Architecture", path: "docs/concepts/global_ohm_app_architecture.md", badge: "jero" },
+              { name: "Global Ohm Memorial", path: "docs/concepts/global_ohm_memorial.md", badge: "jero" },
+              { name: "Unimplemented Features", path: "docs/concepts/unimplemented_features.md", badge: "jero" },
+              { name: "GILM Canonical Reference", path: "docs/concepts/gilm_canonical_reference.md", badge: "symbiquity" },
+              { name: "Hegelian Dialectic", path: "docs/concepts/hegelian_dialectic_palace.md", badge: "symbiquity" },
+              { name: "Quantum Mechanics Ternary", path: "docs/concepts/quantum_mechanics_ternary.md", badge: "symbiquity" },
+              { name: "Ternary Philosophy Release", path: "docs/concepts/ternary_philosophy_release.md", badge: "symbiquity" },
+              { name: "CCGT Consensus Game Theory", path: "docs/concepts/ccgt_consensus_game_theory.md", badge: "symbiquity" },
+              { name: "App UX Flow", path: "docs/concepts/APP_UX_FLOW.md" },
+              { name: "Edge Node Architecture", path: "docs/concepts/EDGE_NODE_ARCHITECTURE.md" },
+              { name: "Global Rome Summary", path: "docs/concepts/GLOBAL_ROME_SUMMARY.md" },
+              { name: "Rome's Final Concept", path: "docs/concepts/ROMES_FINAL_CONCEPT.md" }
+            ]
+          },
+          "discovery": {
+            icon: "🔍",
+            files: [
+              { name: "README.md", path: "docs/discovery/README.md" },
+              { name: "0ovo0 — Complete", path: "docs/discovery/0ovo0.md" },
+              { name: "Part 1 — Discovery & Pattern", path: "docs/discovery/0ovo0_Part1_The_Discovery_and_The_Pattern.md" },
+              { name: "Part 2 — Song, Chain, Name", path: "docs/discovery/0ovo0_Part2_The_Song_The_Chain_The_Name.md" },
+              { name: "Part 3 — Building Rome", path: "docs/discovery/0ovo0_Part3_Building_Rome.md" }
+            ]
+          },
+          "media": {
+            icon: "🎙️",
+            files: [
+              { name: "NotebookLM Export", path: "docs/media/notebookLM.md" },
+              { name: "Podcast Transcript", path: "docs/media/notebookLM_podcast_transcript.md" }
+            ]
+          },
+
+          "provenance": {
+            icon: "🔒",
+            files: [
+              { name: "Attribution Language Rules", path: "docs/provenance/ATTRIBUTION_LANGUAGE_RULES_2026-03-12.md" },
+              { name: "Jero Independent Proposals", path: "docs/provenance/JERO_INDEPENDENT_PROPOSAL_SPACE_2026-03-12.md" },
+              { name: "Palace OS Canonical Baseline", path: "docs/provenance/PALACE_OS_CANONICAL_BASELINE_2026-03-12.md" },
+              { name: "Mapping Matrix", path: "docs/provenance/PALACE_OS_TO_JERO_MAPPING_MATRIX_2026-03-12.md" }
+            ]
+          },
+          "synthegent": {
+            icon: "⚡",
+            files: [
+              { name: "Synthegent 1.1.1", path: "docs/synthegent/SYNTHEGENT_1.1.1.md" },
+              { name: "Synthegent Matrix", path: "docs/synthegent/SYNTHEGENT_MATRIX.md" },
+              { name: "Matrix Application", path: "docs/synthegent/SYNTHEGENT_MATRIX_Application.md" },
+              { name: "Aynthagent Research", path: "docs/synthegent/aynthagent_research_1.1.1.md" }
+            ]
+          }
+        }
+      },
+      "🔬 research": {
+        icon: "🔬",
+        children: {
+          "01_core_concepts": {
+            icon: "🧠",
+            files: [
+              { name: "Ternary Convergence Thesis", path: "research/01_core_concepts/ternary_convergence_thesis.md" },
+              { name: "Latent Space Reasoning", path: "research/01_core_concepts/latent_space_reasoning.md" },
+              { name: "Adversarial Mirror State", path: "research/01_core_concepts/adversarial_mirror_state.md" },
+              { name: "State-2 Dream Observatory", path: "research/01_core_concepts/state_2_dream_observatory.md" },
+              { name: "State-2 Latent Space Hub", path: "research/01_core_concepts/state_2_latent_sspace.md" },
+              { name: "MELD Meaning Engine", path: "research/01_core_concepts/meld_meaning_engine.md" },
+              { name: "GILM (deprecated)", path: "research/01_core_concepts/gilm_meaning_tone_engine.md", badge: "deprecated" },
+              { name: "Latent Reasoning Brief", path: "research/01_core_concepts/latent_reasoning_research_brief.md" },
+              { name: "GRAIL-Bench Spec", path: "research/01_core_concepts/GRAIL_BENCH_SPEC.md" },
+              { name: "GRAIL-Bench Prompts", path: "research/01_core_concepts/GRAIL_BENCH_PROMPTS.md" },
+              { name: "GRAIL-Bench Rubric", path: "research/01_core_concepts/GRAIL_BENCH_RUBRIC.md" }
+            ]
+          },
+          "02_architecture": { icon: "🏗️", files: [{ name: "System Architecture", path: "research/02_architecture/system_architecture.md" }] },
+          "05_technical_specs": { icon: "📐", files: [{ name: "Schemas", path: "research/05_technical_specs/schemas.md" }] },
+          "06_existing_pipeline": { icon: "🔧", files: [
+            { name: "README.md", path: "research/06_existing_pipeline/README.md" },
+            { name: "GILM DTRN Snapin", path: "research/06_existing_pipeline/gilm_meaning_tone_engine_dtrn_snapin.md" }
+          ]},
+          "08_research_references": { icon: "📖", files: [{ name: "References", path: "research/08_research_references/references.md" }] },
+          "09_conversation_history": { icon: "💬", files: [
+            { name: "README.md", path: "research/09_conversation_history/README.md" },
+            { name: "NotebookLM Prefix (262KB)", path: "research/09_conversation_history/notebooklm-prefix.md" }
+          ]},
+          "10_rome_memorial": { icon: "🕊️", files: [{ name: "Rome Viharo Legacy", path: "research/10_rome_memorial_context/rome_viharo_legacy.md" }] },
+          "11_web3_app": { icon: "🔗", files: [{ name: "Blockchain Identity Spec", path: "research/11_web3_app/blockchain_identity_spec.md" }] },
+          "12_survey_system": { icon: "📋", files: [{ name: "Survey Orchestration", path: "research/12_survey_system/survey_orchestration.md" }] },
+          "13_human_ai": { icon: "🤝", files: [{ name: "Human-AI Collaboration", path: "research/13_human_ai_reasoning/human_ai_collaboration.md" }] },
+          "14_adversarial": { icon: "🪞", files: [{ name: "Adversarial Mirror Proposal", path: "research/14_adversarial_system/adversarial_mirror_state_proposal.md" }] },
+          "15_ui_ux": { icon: "🎨", files: [{ name: "Design System", path: "research/15_ui_ux_design/design_system.md" }] }
+        }
+      },
+      "🔗 external": {
+        icon: "🔗",
+        files: [
+          { name: "DTRN Mapping Matrix", path: "external/PALACE_OS_DTRN_MAPPING_MATRIX.md" },
+          { name: "Attribution Rules", path: "external/inspired_by_palace/ATTRIBUTION_RULES.md" },
+          { name: "Canonical Baseline", path: "external/symbiquity_canonical/PALACE_OS_CANONICAL_BASELINE_2026-03-12.md" },
+          { name: "Canonical DTRN Mapping", path: "external/symbiquity_canonical/PALACE_OS_DTRN_MAPPING_MATRIX.md" },
+          { name: "Canonical README", path: "external/symbiquity_canonical/README.md" },
+          { name: "Rome Viharo Presence", path: "external/symbiquity_canonical/ROME_VIHARO_BROADER_PRESENCE.md" },
+          { name: "Source Snapshots", path: "external/symbiquity_canonical/SOURCE_SNAPSHOTS.md" }
+        ]
+      },
+      "📋 planning": {
+        icon: "📋",
+        files: [
+          { name: "Connection Map", path: "planning/CONNECTION_MAP.md" },
+          { name: "Mermaid Diagram Suite", path: "planning/MERMAID DIAGRAM SUITE.md" },
+          { name: "Research Proposal", path: "planning/RESEARCH_PROPOSAL.md" },
+          { name: "Rome", path: "planning/ROME.md" },
+          { name: "Rome Extended", path: "planning/rome_w.md" },
+          { name: "Past Claude Session", path: "planning/PAST_CLAUDE.md" },
+          { name: "Repo Organization Strategy", path: "planning/REPO_ORGANIZATION_STRATEGY.md" },
+          { name: "Git Setup", path: "planning/GIT_SETUP.md" },
+          { name: "GitHub Setup Complete", path: "planning/GITHUB_SETUP_COMPLETE.md" }
+        ]
+      }
+    };
+
+    // Flatten all files for counting and search
+    let allFiles = [];
+    function collectFiles(node, prefix = '') {
+      if (node.files) allFiles = allFiles.concat(node.files);
+      if (node.children) {
+        for (const [key, child] of Object.entries(node.children)) {
+          collectFiles(child, prefix + key + '/');
+        }
+      }
+    }
+    for (const section of Object.values(fileTree)) collectFiles(section);
+
+    // Update counts
+    document.getElementById('file-count').textContent = allFiles.length;
+    document.getElementById('stat-docs').textContent = allFiles.length;
+
+    // Render file tree
+    function renderTree() {
+      const container = document.getElementById('file-tree');
+      container.innerHTML = '';
+
+      for (const [sectionName, section] of Object.entries(fileTree)) {
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'tree-section';
+
+        if (section.files) {
+          const header = document.createElement('div');
+          header.className = 'tree-section-header';
+          header.innerHTML = `<span class="arrow">▼</span>${sectionName}`;
+          header.onclick = () => header.classList.toggle('collapsed');
+          sectionEl.appendChild(header);
+
+          const items = document.createElement('div');
+          items.className = 'tree-section-items';
+          section.files.forEach(f => items.appendChild(createFileItem(f)));
+          sectionEl.appendChild(items);
+        }
+
+        if (section.children) {
+          const header = document.createElement('div');
+          header.className = 'tree-section-header';
+          header.innerHTML = `<span class="arrow">▼</span>${sectionName}`;
+          header.onclick = () => header.classList.toggle('collapsed');
+          sectionEl.appendChild(header);
+
+          const items = document.createElement('div');
+          items.className = 'tree-section-items';
+
+          for (const [subName, sub] of Object.entries(section.children)) {
+            const subHeader = document.createElement('div');
+            subHeader.className = 'tree-section-header';
+            subHeader.style.paddingLeft = '12px';
+            subHeader.innerHTML = `<span class="arrow">▼</span>${sub.icon || '📁'} ${subName}`;
+            subHeader.onclick = () => subHeader.classList.toggle('collapsed');
+            items.appendChild(subHeader);
+
+            const subItems = document.createElement('div');
+            subItems.className = 'tree-section-items';
+            if (sub.files) sub.files.forEach(f => subItems.appendChild(createFileItem(f)));
+            items.appendChild(subItems);
+          }
+          sectionEl.appendChild(items);
+        }
+
+        container.appendChild(sectionEl);
+      }
+    }
+
+    function createFileItem(file) {
+      const item = document.createElement('div');
+      item.className = 'tree-item';
+      item.dataset.path = file.path;
+      item.dataset.name = file.name.toLowerCase();
+
+      let badgeHtml = '';
+      if (file.badge === 'symbiquity') badgeHtml = '<span class="badge badge-symbiquity">SYM</span>';
+      else if (file.badge === 'jero') badgeHtml = '<span class="badge badge-jero">JERO</span>';
+      else if (file.badge === 'mixed') badgeHtml = '<span class="badge badge-mixed">MIX</span>';
+      else if (file.badge === 'deprecated') badgeHtml = '<span class="badge badge-deprecated">DEP</span>';
+
+      item.innerHTML = `<span class="icon">📄</span>${file.name}${badgeHtml}`;
+      item.onclick = () => loadFile(file.path);
+      return item;
+    }
+
+    // Search
+    document.getElementById('search').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.tree-item').forEach(item => {
+        const match = item.dataset.name.includes(q) || item.dataset.path.toLowerCase().includes(q);
+        item.style.display = match ? '' : 'none';
+      });
+    });
+
+    // Load and render file
+    async function loadFile(path) {
+      document.querySelectorAll('.tree-item').forEach(i => i.classList.remove('active'));
+      const activeItem = document.querySelector(`[data-path="${CSS.escape(path)}"]`) ||
+                         document.querySelector(`[data-path="${path}"]`);
+      if (activeItem) activeItem.classList.add('active');
+
+      const parts = path.split('/');
+      const fileName = parts.pop();
+      document.getElementById('breadcrumb').innerHTML =
+        parts.map(p => `<span style="color:var(--text-muted)">${p}</span>`).join(' / ') +
+        ' / <span>' + fileName + '</span>';
+
+      document.getElementById('welcome').classList.add('hidden');
+      const mdRender = document.getElementById('md-render');
+      mdRender.classList.remove('hidden');
+      mdRender.innerHTML = '<div class="loading">Loading…</div>';
+
+      try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        mdRender.innerHTML = marked.parse(text);
+      } catch (err) {
+        mdRender.innerHTML = `<div class="error-msg">Could not load file: ${path}<br><small>${err.message}</small><br><br><small>To view files locally, serve this directory:<br><code>python3 -m http.server 8000</code></small></div>`;
+      }
+    }
+
+    // Quick links
+    const quickLinks = [
+      { icon: '🔬', title: 'Core Research', count: '11 files', path: 'research/01_core_concepts/ternary_convergence_thesis.md' },
+      { icon: '💡', title: 'Concepts', count: '22 files', path: 'docs/concepts/state2_implementation_spec.md' },
+      { icon: '🔒', title: 'Provenance', count: '4 files', path: 'docs/provenance/JERO_INDEPENDENT_PROPOSAL_SPACE_2026-03-12.md' },
+      { icon: '🤖', title: 'Agents', count: '12 files', path: 'docs/agents/README.md' },
+      { icon: '📊', title: 'Analysis', count: '4 files', path: 'docs/analysis/DEEP_ANALYSIS_Two_Transcripts.md' },
+      { icon: '🔍', title: 'Discovery', count: '5 files', path: 'docs/discovery/README.md' }
+    ];
+
+    const qlContainer = document.getElementById('quick-links');
+    quickLinks.forEach(ql => {
+      const el = document.createElement('div');
+      el.className = 'quick-link';
+      el.innerHTML = `<div class="ql-icon">${ql.icon}</div><div class="ql-title">${ql.title}</div><div class="ql-count">${ql.count}</div>`;
+      el.onclick = () => loadFile(ql.path);
+      qlContainer.appendChild(el);
+    });
+
+    // Init
+    renderTree();
+  </script>
+</body>
+</html>

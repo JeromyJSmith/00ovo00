@@ -1,0 +1,64 @@
+```mermaid
+graph TB
+    Input["Research Query Input"]
+    
+    subgraph Stage1["<b>STAGE 1: CONTRADICTION DISCOVERY (State-2)</b>"]
+        MultiAgent["20 AI Agents<br/>(morphological decomposition)"]
+        Responses["Initial Responses<br/>(divergent views)"]
+        ContraDetect["🔍 Contradiction Detector"]
+        
+        Input --> MultiAgent
+        MultiAgent --> Responses
+        Responses --> ContraDetect
+    end
+
+    subgraph Stage2["<b>STAGE 2: TERNARY REFINEMENT (State-2 → State-1/0)</b>"]
+        TernaryEngine["🔀 Ternary State Engine"]
+        RomeKnob["🌀 ROME's KNOB<br/>(dimmer switch)<br/>Turn → Tune → Converge"]
+        PairDialogue["Agent Pair Dialogue<br/>(CGT Protocol)"]
+        StateTransition["State Transition Monitor"]
+        
+        ContraDetect --> TernaryEngine
+        TernaryEngine --> RomeKnob
+        RomeKnob --> PairDialogue
+        PairDialogue --> StateTransition
+    end
+
+    subgraph Stage3["<b>STAGE 3: CONSENSUS VALIDATION (State-1)</b>"]
+        ConsensusCheck["✓ Consensus Validator"]
+        Survey["📋️ Human Survey<br/>(validation loop)"]
+        GRAILPublish["📚 GRAIL Publication"]
+        
+        StateTransition --> ConsensusCheck
+        ConsensusCheck -->|"Not Converged"| TernaryEngine
+        ConsensusCheck -->|"Converged"| Survey
+        Survey -->|"Validated"| GRAILPublish
+        Survey -->|"Rejected"| TernaryEngine
+    end
+
+    subgraph States["<b>TERNARY STATES</b>"]
+        S0["State-0:<br/>FALSE<br/>(rejected hypothesis)"]
+        S1["State-1:<br/>TRUE<br/>(validated consensus)"]
+        S2["State-2:<br/>UNKNOWN/BOTH<br/>(contradiction space)"]
+    end
+
+    StateTransition -.->|"Maps to"| S0 & S1 & S2
+    S2 -.->|"Refines to"| S1
+    S2 -.->|"Refines to"| S0
+    S1 -.->|"Can revert to"| S2
+    
+    Output["Consensus Output<br/>+ Full Reasoning Chain"]
+    GRAILPublish --> Output
+
+    ClassDef stage1 fill:#ffcccc,stroke:#cc0000,stroke-width:3
+    ClassDef stage2 fill:#ffffcc,stroke:#ffaa00,stroke-width:3
+    ClassDef stage3 fill:#ccffcc,stroke:#00cc00,stroke-width:3
+    ClassDef states fill:#ccccff,stroke:#0000cc,stroke-width:2
+    ClassDef rome fill:#ffccff,stroke:#cc00cc,stroke-width:4
+
+    class MultiAgent,Responses,ContraDetect stage1;
+    class TernaryEngine,PairDialogue,StateTransition stage2;
+    class ConsensusCheck,Survey,GRAILPublish stage3;
+    class S0,S1,S2 states;
+    class RomeKnob rome;
+```

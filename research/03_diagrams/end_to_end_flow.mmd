@@ -1,0 +1,250 @@
+%% DTRN COMPLETE END-TO-END FLOW DIAGRAM
+%% Shows how a single research query flows from user input to final synthesized output
+%% Generated: March 12, 2026
+
+graph TB
+    START([👤 USER SUBMITS QUERY])
+    Q["'How can collective intelligence<br/>improve AI training?'"]
+    
+    START --> Q
+    
+    %% ============================================
+    %% TIER 1: QUERY DECOMPOSITION
+    %% ============================================
+    subgraph TIER1["🧩 TIER 1: QUERY DECOMPOSITION (2 min)"]
+        direction TB
+        QD1[NLP Analysis:<br/>Extract key concepts]
+        QD2[Domain Identification:<br/>ML/AI, CogSci, Social Systems]
+        QD3[Methodology Extraction:<br/>Theoretical, Empirical, Computational]
+        QD4[Generate Morphological Matrix:<br/>4 domains × 5 methods = 20 cells]
+        QD5[Feasibility Pruning:<br/>Remove nonsensical combinations]
+        
+        QD1 --> QD2 --> QD3 --> QD4 --> QD5
+    end
+    
+    Q --> QD1
+    
+    %% ============================================
+    %% TIER 2: PARALLEL AGENT SPAWNING
+    %% ============================================
+    subgraph TIER2["🤖 TIER 2: AGENT SPAWNING (5 min)"]
+        direction TB
+        AS1[Spawn 20 Specialized Agents]
+        AS2[Assign Personas & Toolkits]
+        AS3[Set Constraints:<br/>3-hour time budget<br/>Independence mode ON]
+        AS4[Distribute Matrix Cells]
+        
+        AS1 --> AS2 --> AS3 --> AS4
+    end
+    
+    QD5 --> AS1
+    
+    %% ============================================
+    %% TIER 3: PARALLEL RESEARCH EXECUTION
+    %% ============================================
+    subgraph TIER3["🔍 TIER 3: PARALLEL RESEARCH (3 hours)"]
+        direction TB
+        
+        subgraph AG1["Agent 1: ML/AI + Theoretical"]
+            A1T1[Search arXiv:<br/>'collective learning theory']
+            A1T2[Extract 47 papers]
+            A1T3[Generate 12 claims]
+        end
+        
+        subgraph AG2["Agent 2: ML/AI + Empirical"]
+            A2T1[Search arXiv:<br/>'federated learning experiments']
+            A2T2[Extract 38 papers]
+            A2T3[Generate 15 claims]
+        end
+        
+        subgraph AG3["Agent 3: CogSci + Computational"]
+            A3T1[Search scholar:<br/>'distributed cognition models']
+            A3T2[Extract 29 papers]
+            A3T3[Generate 10 claims]
+        end
+        
+        subgraph AGN["... Agents 4-20"]
+            ANT1[Each agent works<br/>independently]
+            ANT2[No inter-agent<br/>communication]
+            ANT3[Staggered publication<br/>every 30 minutes]
+        end
+        
+        A1T1 --> A1T2 --> A1T3
+        A2T1 --> A2T2 --> A2T3
+        A3T1 --> A3T2 --> A3T3
+        ANT1 --> ANT2 --> ANT3
+    end
+    
+    AS4 --> AG1 & AG2 & AG3 & AGN
+    
+    %% ============================================
+    %% TIER 4: DATA STORAGE & GRAPH CONSTRUCTION
+    %% ============================================
+    subgraph TIER4["💾 TIER 4: GRAPH AUGMENTATION (Continuous)"]
+        direction TB
+        
+        subgraph STORAGE["Storage Layer"]
+            VDB[(Vector Database<br/>ChromaDB<br/>---<br/>248 embeddings)]
+            GDB[(Graph Database<br/>Neo4j<br/>---<br/>20 nodes<br/>187 claims<br/>432 edges)]
+            ES[(Evidence Store<br/>PostgreSQL<br/>---<br/>114 papers<br/>523 citations)]
+        end
+        
+        GA1[Embed all claims<br/>using sentence-transformers]
+        GA2[Create NetworkNode<br/>for each agent]
+        GA3[Link claims to nodes<br/>via GENERATED edges]
+        GA4[Compute semantic similarity<br/>between all claim pairs]
+        GA5[Create relationship edges:<br/>SUPPORTS / CONTRADICTS / ISOMORPHIC_TO]
+        
+        GA1 --> VDB
+        GA2 --> GDB
+        GA3 --> GDB
+        GA4 --> VDB
+        GA5 --> GDB
+        
+        VDB -.->|sync| GDB
+    end
+    
+    A1T3 --> GA1
+    A2T3 --> GA1
+    A3T3 --> GA1
+    ANT3 --> GA1
+    
+    %% ============================================
+    %% TIER 5: ROME CONSENSUS ENGINE
+    %% ============================================
+    subgraph TIER5["🔺 TIER 5: ROME CONSENSUS ENGINE (90 min)"]
+        direction TB
+        
+        subgraph STAGE1["Stage 1: Baseline Extraction (30 min)"]
+            S1A[Query ChromaDB:<br/>Get all claim embeddings]
+            S1B[Cluster by cosine similarity<br/>threshold > 0.8]
+            S1C[Identify high-convergence claims<br/>supported by ≥60% of agents]
+            S1D[RESULT: 12 Baseline Truths]
+        end
+        
+        subgraph STAGE2["Stage 2: State 2 Localization (45 min)"]
+            S2A[Find claims with 30-70% support]
+            S2B[Query Neo4j:<br/>MATCH CONTRADICTS relationships]
+            S2C[Context-dependent truth mapping:<br/>When is each claim valid?]
+            S2D[RESULT: 7 State 2 Contradictions]
+        end
+        
+        subgraph STAGE3["Stage 3: Synthesis & Implication (15 min)"]
+            S3A[LLM Meta-Analysis:<br/>Synthesize baseline + contradictions]
+            S3B[Generate emergent insights<br/>that no single agent found]
+            S3C[Implication cascading:<br/>What does this mean for practice?]
+            S3D[RESULT: 3 Meta-Insights]
+        end
+        
+        S1A --> S1B --> S1C --> S1D
+        S2A --> S2B --> S2C --> S2D
+        S1D & S2D --> S3A
+        S3A --> S3B --> S3C --> S3D
+    end
+    
+    VDB --> S1A
+    GDB --> S2A
+    
+    %% ============================================
+    %% TIER 6: ISOMORPHISM DETECTION
+    %% ============================================
+    subgraph TIER6["🔗 TIER 6: CROSS-DOMAIN PATTERN DETECTION (30 min)"]
+        direction TB
+        
+        ISO1[Build knowledge graph<br/>from all claims + evidence]
+        ISO2[Compute graph kernels<br/>Weisfeiler-Lehman algorithm]
+        ISO3[Find structural isomorphisms<br/>across domains]
+        ISO4[Semantic similarity check<br/>embeddings of isomorphic structures]
+        ISO5[RESULT: 4 Cross-Domain Connections]
+        
+        ISO1 --> ISO2 --> ISO3 --> ISO4 --> ISO5
+        
+        subgraph EXAMPLES["Discovered Isomorphisms"]
+            EX1["Blockchain consensus ≈<br/>Collective decision-making<br/>similarity: 0.89"]
+            EX2["Swarm intelligence ≈<br/>Federated learning<br/>similarity: 0.84"]
+            EX3["Immune system ≈<br/>Adversarial robustness<br/>similarity: 0.81"]
+        end
+        
+        ISO5 --> EX1 & EX2 & EX3
+    end
+    
+    S3D --> ISO1
+    GDB -.->|provides graph structure| ISO1
+    
+    %% ============================================
+    %% TIER 7: OUTPUT GENERATION
+    %% ============================================
+    subgraph TIER7["📤 TIER 7: MULTI-FORMAT OUTPUT (15 min)"]
+        direction TB
+        
+        OUT1[Executive Summary<br/>2 pages, high-level insights]
+        OUT2[Technical Deep-Dive<br/>20 pages, full methodology]
+        OUT3[State 2 Analysis Report<br/>Detailed contradiction mapping]
+        OUT4[Knowledge Graph Export<br/>GraphML + Cypher queries]
+        OUT5[Interactive Dashboard<br/>Neo4j Browser + visualizations]
+        OUT6[API Endpoints<br/>JSON responses for integration]
+        
+        COMPILE[Compile all outputs<br/>Package as ZIP + HTML]
+    end
+    
+    S1D --> OUT1
+    S3D --> OUT1 & OUT2
+    S2D --> OUT3
+    ISO5 --> OUT2 & OUT4
+    GDB -.->|export| OUT4 & OUT5
+    
+    OUT1 & OUT2 & OUT3 & OUT4 & OUT5 & OUT6 --> COMPILE
+    
+    %% ============================================
+    %% TIER 8: GRAPH UPDATE & FEEDBACK
+    %% ============================================
+    subgraph TIER8["🔄 TIER 8: CONTINUOUS LEARNING (Ongoing)"]
+        direction TB
+        
+        FB1[User reviews output]
+        FB2[Submit feedback:<br/>Rate insights 1-5]
+        FB3[Flag State 2 contradictions<br/>for deeper investigation]
+        FB4[Update graph weights:<br/>Boost high-rated claims]
+        FB5[Trigger follow-up queries<br/>on unresolved contradictions]
+        
+        FB1 --> FB2 --> FB3 --> FB4 --> FB5
+        FB5 -.->|new query| QD1
+        FB4 -.->|update| GDB
+    end
+    
+    COMPILE --> FB1
+    
+    %% ============================================
+    %% FINAL OUTPUT
+    %% ============================================
+    END([📊 DELIVERABLE PACKAGE])
+    
+    COMPILE --> END
+    
+    %% ============================================
+    %% STYLING
+    %% ============================================
+    
+    style START fill:#4A90E2,stroke:#333,stroke-width:3px,color:#fff
+    style Q fill:#4A90E2,stroke:#333,stroke-width:2px,color:#fff
+    style END fill:#7ED321,stroke:#333,stroke-width:4px,color:#fff
+    
+    style TIER1 fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px
+    style TIER2 fill:#FFF4E6,stroke:#F5A623,stroke-width:2px
+    style TIER3 fill:#FFE8E8,stroke:#E94B3C,stroke-width:2px
+    style TIER4 fill:#F0E8FF,stroke:#9013FE,stroke-width:2px
+    style TIER5 fill:#FFE8F0,stroke:#E94B3C,stroke-width:3px
+    style TIER6 fill:#E8FFF0,stroke:#7ED321,stroke-width:2px
+    style TIER7 fill:#FFF8E8,stroke:#F5A623,stroke-width:2px
+    style TIER8 fill:#E8F0FF,stroke:#4A90E2,stroke-width:2px
+    
+    style S1D fill:#7ED321,stroke:#333,stroke-width:2px,color:#000
+    style S2D fill:#E94B3C,stroke:#333,stroke-width:3px,color:#fff
+    style S3D fill:#F5A623,stroke:#333,stroke-width:2px,color:#000
+    style ISO5 fill:#9013FE,stroke:#333,stroke-width:2px,color:#fff
+    
+    style VDB fill:#4A90E2,stroke:#333,stroke-width:2px,color:#fff
+    style GDB fill:#E94B3C,stroke:#333,stroke-width:3px,color:#fff
+    style ES fill:#F5A623,stroke:#333,stroke-width:2px,color:#fff
+    
+    style COMPILE fill:#7ED321,stroke:#333,stroke-width:3px,color:#fff

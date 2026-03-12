@@ -1,0 +1,58 @@
+```mermaid
+graph TB
+    subgraph Layer1["<b>H U M A N   L A Y E R</b>"]
+        User["🧑 Human Researcher"]
+        AI["🤖 AI Agent"]
+        Survey["📋️ Survey System"]
+        Web3["🌑 Web3 App (RSVP)"]
+    end
+
+    subgraph Layer2["<b>WRITE LAYER (Collective Intelligence)</b>"]
+        CGT["⚡ Conversational Game Theory"]
+        Ternary["🔀 Ternary State Management"]
+        Consensus["❓ Consensus Engine"]
+    end
+
+    subgraph Layer3["<b>D R I V E  LAYER (Graph Intelligence)</b>"]
+        Neo4j["🗀 Neo4j Graph DB"]
+        GraphRAG["🔦 Graph-Augmented Generation"]
+        Isomorphism["🎠🔧 Isomorphism Detector"]
+    end
+
+    subgraph Layer4["<b>HARDWARE LAYER (Computational Substrate)</b>"]
+        GPU["🖥 GPU Cluster (parallel ternary processing)"]
+        P2PNodes["🌐 P2P Nodes (distributed reasoning)"]
+        Storage["📚 📔 Distributed Storage (IPFS + S3+)"]
+    end
+
+    %% Interaction Flows
+    User -->|Submit Query| Web3
+    AI -->|Collaborate| CGT
+    Survey -->|Feedback| Consensus
+    Web3 -->|RSVP Transaction| CGT
+
+    CGT -->|State Transitions| Ternary
+    Ternary -->|Convergence| Consensus
+    Consensus -->|Graph Update| Neo4j
+
+    Neo4j -->|Context Retrieval| GraphRAG
+    GraphRAG -->|Pattern Detection| Isomorphism
+    Isomorphism -->|Meta-Patterns| CGT
+
+    GraphRAG -->|Query Execution| GPU
+    Consensus -->|Parallel Compute| GPU
+    GPU -->|Distributed Workload| P2PNodes
+    P2PNodes -->|Data Persistence| Storage
+    Storage -->|Versioned State| Neo4j
+
+    %% Key Features
+    ClassDef Layer1 fill:#e6f2ff,stroke:#0066cc,stroke-width:3
+    ClassDef Layer2 fill:#fff3e6,stroke:#ff9900,stroke-width:3
+    ClassDef Layer3 fill:#e6ffed,stroke:#009944,stroke-width:3
+    ClassDef Layer4 fill:#ffe6ed,stroke:#cc0055,stroke-width:3
+
+    class User,AI,Survey,Web3 Layer1;
+    class CGT,Ternary,Consensus Layer2;
+    class Neo4j,GraphRAG,Isomorphism Layer3;
+    class GPU,P2PNodes,Storage Layer4;
+```

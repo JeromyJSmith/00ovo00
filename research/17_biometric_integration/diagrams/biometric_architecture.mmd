@@ -1,0 +1,116 @@
+```mermaid
+graph TB
+    subgraph "USER LAYER: Somatic Sensing"
+        USER[👤 Human User]
+        PHONE[📱 Smartphone NPU]
+        WATCH[⌚ Smartwatch/Ring]
+        
+        USER --> PHONE
+        USER --> WATCH
+        
+        PHONE --> CAM[📷 Camera: Micro-expressions]
+        PHONE --> MIC[🎤 Microphone: Vocal stress]
+        PHONE --> TEXT[⌨️ Text Input: Semantics]
+        WATCH --> HRV[💓 Heart Rate Variability]
+        WATCH --> EDA[💧 Electrodermal Activity]
+    end
+    
+    subgraph "TIER 0.5: Local Biometric Processing"
+        CAM --> VISUAL[Visual Processor]
+        MIC --> AUDIO[Audio Processor]
+        HRV --> BIO[Biometric Processor]
+        EDA --> BIO
+        TEXT --> SEM[Semantic Processor]
+        
+        VISUAL --> |Facial micro-expressions| COHERENCE[Coherence Engine]
+        AUDIO --> |Vocal tremors/jitter| COHERENCE
+        BIO --> |HRV + EDA/GSR| COHERENCE
+        SEM --> |Text embeddings| COHERENCE
+        
+        COHERENCE --> |Measure delta| SCORE[Coherence Score: 0.0-1.0]
+        SCORE --> ZKP[ZK-Proof Generator]
+        
+        ZKP --> |zk-SNARK| PROOF[Cryptographic Proof<br/>0x5f4dcc3b...]
+    end
+    
+    subgraph "TIER 1: Query Decomposition"
+        PROOF --> WALLET[🔐 Web3 Wallet]
+        WALLET --> QUERY[User Query + ZKP]
+        QUERY --> MORPH[Morphological Matrix]
+        MORPH --> CELLS[20 Research Cells]
+    end
+    
+    subgraph "TIER 2: Agent Swarm Layer"
+        CELLS --> HONEST[20 Honest Agents]
+        CELLS --> ADV[5 Adversarial Agents]
+        
+        HONEST --> PAPERS[📚 arXiv Papers]
+        ADV --> PAPERS
+    end
+    
+    subgraph "TIER 3: Shared Evidence Store (Neo4j)"
+        PAPERS --> CLAIMS[187 Claims with ZKPs]
+        CLAIMS --> EDGES[432 Edges:<br/>SUPPORTS/CONTRADICTS/ISOMORPHIC]
+        
+        CLAIMS --> |Each claim has| BIOMETRIC[Biometric Metadata:<br/>- ZKP hash<br/>- Coherence score<br/>- Autonomic state]
+    end
+    
+    subgraph "TIER 4: ROME Consensus Engine (Enhanced)"
+        BIOMETRIC --> S0[State 0: Baseline Truths<br/>coherence > 0.8]
+        BIOMETRIC --> S1[State 1: Consensus<br/>high support + high sincerity]
+        BIOMETRIC --> S2[State 2: Hold<br/>semantic-biometric dissonance]
+        
+        S2 --> |Auto-trigger on| DISSONANCE[Coherence < 0.6<br/>OR<br/>Network stress > 0.7]
+        
+        DISSONANCE --> DETECT[Adversarial Detection:<br/>Precision 0.85 / Recall 0.90]
+    end
+    
+    subgraph "TIER 5: Isomorphism Detection"
+        S0 --> PATTERNS[Cross-Domain Pattern Finder]
+        S1 --> PATTERNS
+        PATTERNS --> ISO[4 Isomorphisms Detected]
+    end
+    
+    subgraph "TIER 6: Output Generation"
+        S0 --> OUTPUTS[6 Deliverables:<br/>- Executive summary<br/>- Technical deep-dive<br/>- State-2 report<br/>- Graph export<br/>- Dashboard<br/>- API]
+        ISO --> OUTPUTS
+        DETECT --> OUTPUTS
+    end
+    
+    subgraph "TIER 7: Blockchain Archive (Web3)"
+        OUTPUTS --> GRAIL[🏛️ GRAIL Knowledge Graph<br/>Global Resolution Library]
+        GRAIL --> IPFS[IPFS/Arweave Storage]
+        GRAIL --> SMART[Smart Contract:<br/>RomeBiometricConsensus.sol]
+        
+        SMART --> |Mints| NFT[Knowledge NFT:<br/>Tokenized Insights]
+        NFT --> |Rewards| CONTRIBUTORS[Contributors<br/>Human + AI Agents]
+    end
+    
+    subgraph "TIER 8: Continuous Learning Loop"
+        CONTRIBUTORS --> SURVEY[📊 Network Surveys<br/>Every 3 hours]
+        SURVEY --> |Collect| SURVEY_ZKP[Text + ZKPs from all nodes]
+        SURVEY_ZKP --> |Aggregate| NETWORK_HEALTH[Network Health Metrics:<br/>- Avg coherence<br/>- Stress levels<br/>- HRV sync]
+        
+        NETWORK_HEALTH --> |If stress > 0.7| PAUSE[🛑 Auto-pause State transitions]
+        NETWORK_HEALTH --> |If coherence > 0.85| ACCELERATE[⚡ Accelerate synthesis]
+        
+        PAUSE --> MORPH
+        ACCELERATE --> MORPH
+    end
+    
+    subgraph "🎯 THE SOMATIC WEB"
+        SEMATIC[Semantic Web<br/>❌ Disembodied text]
+        SOMATIC[✅ Somatic Web<br/>Verified physiological truth]
+        
+        SEMATIC -.->|Replaced by| SOMATIC
+    end
+    
+    style COHERENCE fill:#ff6b6b
+    style ZKP fill:#ff6b6b
+    style BIOMETRIC fill:#ff6b6b
+    style DISSONANCE fill:#ff6b6b
+    style SMART fill:#4ecdc4
+    style GRAIL fill:#ffe66d
+    style NETWORK_HEALTH fill:#a8e6cf
+    style SOMATIC fill:#95e1d3
+```

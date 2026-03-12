@@ -1,0 +1,73 @@
+---
+title: "Edge Node Architecture — Every Phone Is a Node"
+---
+graph TB
+    subgraph Phone["📱 YOUR PHONE (Edge Node)"]
+        direction TB
+        UI["Interface Layer<br/>Next.js App Router"]
+        NODE["node.ts<br/>★ DTRN Edge Node Core"]
+        BITNET["BitNet Inference<br/>Ternary Weights on CPU"]
+        GRAPH_LOCAL["Local Graph Cache<br/>Your connections + history"]
+        AUDIO["Audio Engine<br/>Tone.js — frequency IS state"]
+
+        UI --> NODE
+        NODE --> BITNET
+        NODE --> GRAPH_LOCAL
+        NODE --> AUDIO
+    end
+
+    subgraph Views["App Router Views"]
+        direction LR
+        V1["/ Resonance<br/>Knob + Triangles"]
+        V2["/research<br/>Query + Findings"]
+        V3["/reasoning<br/>Human+AI"]
+        V4["/network<br/>Graph Viz"]
+        V5["/ceremony<br/>Projection"]
+        V6["/profile<br/>Owl Address"]
+    end
+
+    subgraph Network["P2P Edge Network"]
+        direction LR
+        P1["📱 Node A"]
+        P2["📱 Node B"]
+        P3["📱 Node C"]
+        P4["📱 Node D"]
+        P5["📱 ...Node N"]
+    end
+
+    subgraph Consensus["ROME Consensus Protocol"]
+        direction TB
+        S0["State 0<br/>False / Blocked"]
+        S1["State 1<br/>True / Aligned"]
+        S2["State 2<br/>Unknown / Productive<br/>Contradiction"]
+    end
+
+    subgraph Training["Collective Training Loop"]
+        direction LR
+        T1["Interactions"] --> T2["Ternary Signals"]
+        T2 --> T3["Consensus Events"]
+        T3 --> T4["Model Update"]
+        T4 --> T5["Better Resonance"]
+        T5 --> T1
+    end
+
+    Phone <-->|"libp2p + gossip"| Network
+    Phone -->|"frequency broadcast"| Consensus
+    Consensus -->|"training signals"| Training
+    Training -->|"improved detection"| Phone
+    Views --> UI
+
+    subgraph Shared["Shared Infrastructure"]
+        SUPA["Supabase<br/>Realtime Broadcast"]
+        NEO4J["Neo4j<br/>Global Knowledge Graph"]
+        IPFS["IPFS + OrbitDB<br/>Decentralized Storage"]
+        CHAIN["Polygon<br/>On-chain Proofs"]
+    end
+
+    Network <--> Shared
+
+    style Phone fill:#1a1a2e,stroke:#e94560,color:#fff
+    style NODE fill:#e94560,stroke:#fff,color:#fff
+    style S2 fill:#ff6b35,stroke:#fff,color:#fff
+    style Training fill:#0f3460,stroke:#16213e,color:#fff
+    style Consensus fill:#16213e,stroke:#e94560,color:#fff

@@ -1,0 +1,45 @@
+{
+  "name": "global-ohm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@json-render/core": "^0.12.1",
+    "@json-render/react": "^0.12.1",
+    "@json-render/remotion": "^0.12.1",
+    "@json-render/xstate": "^0.12.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/postprocessing": "^3.0.4",
+    "@supabase/supabase-js": "^2.99.0",
+    "@types/three": "^0.183.1",
+    "@xstate/react": "^6.1.0",
+    "@xstate/store": "^3.16.0",
+    "katex": "^0.16.38",
+    "manim-web": "^0.3.12",
+    "neo4j-driver": "^6.0.1",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "three": "^0.183.2",
+    "tone": "^15.1.22",
+    "wawa-vfx": "^1.2.10",
+    "xstate": "^5.28.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

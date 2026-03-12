@@ -1,0 +1,76 @@
+```mermaid
+graph TB
+    Query["Research Query:<br/>'What is the consensus on AI safety<br/>across different geographic regions?'"]
+    
+    subgraph Geographic["<b>GEOGRAPHIC LAYER</b>"]
+        NA["🌎 North America<br/>(lat/lon cluster)"]
+        EU["🌍 Europe<br/>(lat/lon cluster)"]
+        Asia["🌏 Asia<br/>(lat/lon cluster)"]
+        SA["🌎 South America<br/>(lat/lon cluster)"]
+    end
+
+    subgraph Semantic["<b>SEMANTIC LAYER</b>"]
+        Cluster1["🧩 Semantic Cluster 1:<br/>'AI alignment'<br/>(embedding centroid)"]
+        Cluster2["🧩 Semantic Cluster 2:<br/>'AI regulation'<br/>(embedding centroid)"]
+        Cluster3["🧩 Semantic Cluster 3:<br/>'AI ethics'<br/>(embedding centroid)"]
+        Cluster4["🧩 Semantic Cluster 4:<br/>'AI capabilities'<br/>(embedding centroid)"]
+    end
+
+    subgraph Consensus["<b>CONSENSUS LAYER</b>"]
+        C1["✓ Consensus Region 1:<br/>NA × Alignment<br/>(70% agreement)"]
+        C2["✓ Consensus Region 2:<br/>EU × Regulation<br/>(85% agreement)"]
+        C3["⚠️ Divergence Region 1:<br/>Asia × Ethics<br/>(45% agreement)"]
+        C4["✓ Consensus Region 3:<br/>SA × Capabilities<br/>(60% agreement)"]
+    end
+
+    Query --> Geographic
+    Query --> Semantic
+
+    NA --> C1
+    EU --> C2
+    Asia --> C3
+    SA --> C4
+
+    Cluster1 --> C1
+    Cluster2 --> C2
+    Cluster3 --> C3
+    Cluster4 --> C4
+
+    subgraph CypherQuery["<b>NEO4J CYPHER QUERY</b>"]
+        Q1["MATCH (r:Research)-[:LOCATED_IN]->(g:Geographic)"]
+        Q2["MATCH (r)-[:ANALYZED_IN]->(s:Semantic)"]
+        Q3["MATCH (consensus:ConsensusRegion)"]
+        Q4["WHERE consensus.agreement_level > 0.6"]
+        Q5["RETURN g.name, s.centroid, consensus.agreement_level"]
+        
+        Q1 --> Q2 --> Q3 --> Q4 --> Q5
+    end
+
+    subgraph Visualization["<b>GEOSEMANTIC HEATMAP OUTPUT</b>"]
+        Map["🗺️ World Map<br/>(geographic overlay)"]
+        Heatmap["🔥 Consensus Heatmap<br/>(agreement intensity)"]
+        Divergence["⚠️ Divergence Markers<br/>(contradictions)"]
+        
+        Map --> Heatmap
+        Heatmap --> Divergence
+    end
+
+    C1 & C2 & C3 & C4 --> CypherQuery
+    Q5 --> Visualization
+
+    Output["Insight:<br/>'EU shows strongest consensus<br/>on AI regulation (85%),<br/>while Asia has divergent views<br/>on AI ethics (45%)'"]
+    
+    Divergence --> Output
+
+    ClassDef geo fill:#e6f2ff,stroke:#0066cc,stroke-width:2
+    ClassDef semantic fill:#fff3e6,stroke:#ff9900,stroke-width:2
+    ClassDef consensus fill:#e6ffed,stroke:#009944,stroke-width:2
+    ClassDef cypher fill:#ffe6ed,stroke:#cc0055,stroke-width:2
+    ClassDef viz fill:#ffffcc,stroke:#ffaa00,stroke-width:3
+
+    class NA,EU,Asia,SA geo;
+    class Cluster1,Cluster2,Cluster3,Cluster4 semantic;
+    class C1,C2,C3,C4 consensus;
+    class Q1,Q2,Q3,Q4,Q5 cypher;
+    class Map,Heatmap,Divergence viz;
+```

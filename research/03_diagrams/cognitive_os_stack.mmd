@@ -1,0 +1,90 @@
+graph TB
+    subgraph "COGNITIVE OS STACK (Research Field → DTRN Implementation)"
+        
+        subgraph "LAYER 1: STATE SENSING"
+            EEG[EEG/fNIRS<br/>Neural Activity]
+            HRV[HRV<br/>Cardiac Variability]
+            GSR[GSR/EDA<br/>Arousal]
+            VOICE[Voice Analysis<br/>Prosody, Pitch]
+            VISION[Facial Expression<br/>Micro-movements]
+        end
+        
+        subgraph "LAYER 2: MULTIMODAL FUSION"
+            WEARABLE[NormWear-style<br/>Foundation Model]
+            BIOSIG[Biosignal<br/>Representation Learning]
+        end
+        
+        subgraph "LAYER 3: STATE INTERPRETATION"
+            GILM[GILM Meaning/Tone Engine<br/>Contextual + Uncertainty]
+            COHERENCE[Coherence Engine<br/>Cross-Modal Alignment]
+        end
+        
+        subgraph "LAYER 4: LATENT REASONING"
+            COCONUT[COCONUT<br/>Continuous Thought]
+            PAUSE[Pause Tokens<br/>Soft Thinking]
+            RECURRENT[Recurrent Depth<br/>Iterative Refinement]
+        end
+        
+        subgraph "LAYER 5: TERNARY POLICY"
+            STATE0[State-0: Reject<br/>Coherence < 0.3]
+            STATE1[State-1: Consensus<br/>Coherence ≥ 0.85]
+            STATE2[State-2: HOLD<br/>Coherence 0.3-0.85]
+        end
+        
+        subgraph "LAYER 6: ADAPTIVE INTERFACE"
+            THREAD[Thread Policy Engine<br/>Dynamic Allocation]
+            INQUIRY[Inquiry Generator<br/>Reframing Prompts]
+        end
+        
+        subgraph "LAYER 7: COLLECTIVE INTELLIGENCE"
+            PALACE[Palace OS<br/>Multi-Agent Coordination]
+            CONSENSUS[Rome Consensus<br/>Biometric-Verified]
+        end
+        
+        subgraph "LAYER 8: OBSERVABILITY"
+            MIRROR[MirrorState<br/>Quarantine Annex]
+            DREAM[DreamArtifact<br/>Latent Visualization]
+        end
+        
+        subgraph "LAYER 9: PRIVACY"
+            ZKP[Zero-Knowledge Proofs<br/>zk-Bio]
+            EDGE[On-Device Processing<br/>Local NPU]
+        end
+    end
+    
+    %% Data Flow
+    EEG --> WEARABLE
+    HRV --> WEARABLE
+    GSR --> WEARABLE
+    VOICE --> WEARABLE
+    VISION --> WEARABLE
+    
+    WEARABLE --> BIOSIG
+    BIOSIG --> GILM
+    GILM --> COHERENCE
+    
+    COHERENCE --> COCONUT
+    COCONUT --> PAUSE
+    PAUSE --> RECURRENT
+    
+    RECURRENT --> STATE0
+    RECURRENT --> STATE1
+    RECURRENT --> STATE2
+    
+    STATE2 --> THREAD
+    THREAD --> INQUIRY
+    
+    STATE1 --> PALACE
+    STATE2 --> PALACE
+    PALACE --> CONSENSUS
+    
+    STATE2 --> MIRROR
+    MIRROR --> DREAM
+    
+    WEARABLE -.->|Raw data<br/>never leaves device| EDGE
+    CONSENSUS -.->|Only proofs<br/>to network| ZKP
+    
+    style STATE2 fill:#ff6b6b,stroke:#c92a2a,stroke-width:3px
+    style GILM fill:#51cf66,stroke:#2b8a3e,stroke-width:2px
+    style MIRROR fill:#ffd43b,stroke:#fab005,stroke-width:2px
+    style ZKP fill:#339af0,stroke:#1864ab,stroke-width:2px

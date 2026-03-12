@@ -1,0 +1,50 @@
+I need to replace the document content entirely. Let me do that:
+
+```mermaid
+graph LR
+    subgraph Traditional["<b>TRADITIONAL RAG</b>"]
+        VectorDB[("📊 Vector DB<br/>(embeddings)")]
+        Embedding["🔢 Embedding Model"]
+        Retrieval["🔍 Similarity Search"]
+        LLM1["🤖 LLM Generation"]
+        
+        Query1["User Query"] --> Embedding
+        Embedding --> Retrieval
+        Retrieval --> VectorDB
+        VectorDB --> LLM1
+        LLM1 --> Answer1["Answer"]
+    end
+
+    subgraph GraphAugmented["<b>GRAPH-AUGMENTED GENERATION (DTRN)</b>"]
+        GraphDB[("🗀 Neo4j<br/>(relationships)")]
+        TernaryEngine["🔀 Ternary State Engine"]
+        TraversalAlgo["🚶 Graph Traversal"]
+        ContextBuilder["🧩 Context Builder"]
+        LLM2["🤖 LLM + CGT"]
+        ConsensusLayer["✓ Consensus Validation"]
+        
+        Query2["User Query"] --> TernaryEngine
+        TernaryEngine --> TraversalAlgo
+        TraversalAlgo --> GraphDB
+        GraphDB --> ContextBuilder
+        ContextBuilder --> LLM2
+        LLM2 --> ConsensusLayer
+        ConsensusLayer --> Answer2["Consensus Answer"]
+    end
+
+    %% Key Differences
+    note1["<b>❌ Limitations:</b><br/>• No relationships<br/>• Cosine similarity only<br/>• Context isolation<br/>• No contradiction handling"]
+    note2["<b>✅ Advantages:</b><br/>• Full relationship context<br/>• Multi-hop reasoning<br/>• Ternary state management<br/>• Contradiction resolution<br/>• Geosemantic analysis"]
+
+    Traditional -.->|"vs"| GraphAugmented
+    VectorDB -.->|"Linear search"| note1
+    GraphDB -.->|"Graph traversal"| note2
+
+    ClassDef traditional fill:#ffcccc,stroke:#cc0000,stroke-width:2
+    ClassDef graph fill:#ccffcc,stroke:#00cc00,stroke-width:2
+    ClassDef note fill:#ffffcc,stroke:#ffaa00,stroke-width:2
+
+    class VectorDB,Embedding,Retrieval,LLM1,Answer1 traditional;
+    class GraphDB,TernaryEngine,TraversalAlgo,ContextBuilder,LLM2,ConsensusLayer,Answer2 graph;
+    class note1,note2 note;
+```

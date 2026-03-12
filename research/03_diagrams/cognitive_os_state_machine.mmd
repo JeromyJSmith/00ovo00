@@ -1,0 +1,94 @@
+stateDiagram-v2
+    [*] --> Baseline: User enters system
+    
+    Baseline --> Sensing: Continuous monitoring
+    
+    state Sensing {
+        [*] --> MultimodalCapture
+        MultimodalCapture --> EEG
+        MultimodalCapture --> HRV
+        MultimodalCapture --> GSR
+        MultimodalCapture --> Voice
+        MultimodalCapture --> Vision
+        
+        EEG --> Fusion
+        HRV --> Fusion
+        GSR --> Fusion
+        Voice --> Fusion
+        Vision --> Fusion
+    }
+    
+    Fusion --> GILMAnalysis: Semantic + Prosodic + Physiological
+    
+    state GILMAnalysis {
+        [*] --> ContextualInterpretation
+        ContextualInterpretation --> CoherenceCalculation
+        CoherenceCalculation --> UncertaintyEstimation
+    }
+    
+    GILMAnalysis --> LatentReasoning: Coherence score + uncertainty
+    
+    state LatentReasoning {
+        [*] --> COCONUT
+        COCONUT --> PauseTokens: If uncertainty > 0.3
+        PauseTokens --> RecurrentLoops
+        RecurrentLoops --> LatentTelemetry
+    }
+    
+    LatentTelemetry --> TernaryDecision: S, C, P vectors
+    
+    state TernaryDecision {
+        [*] --> EvaluateCoherence
+        EvaluateCoherence --> State1: coherence ≥ 0.85
+        EvaluateCoherence --> State2: 0.3 ≤ coherence < 0.85
+        EvaluateCoherence --> State0: coherence < 0.3
+    }
+    
+    State1 --> PalaceConsensus: Proceed
+    State2 --> StateHold: Inquiry + Pause
+    State0 --> Reject: With rationale
+    
+    state StateHold {
+        [*] --> CaptureMirrorState
+        CaptureMirrorState --> GenerateInquiry
+        GenerateInquiry --> WaitForClarification
+        WaitForClarification --> Reevaluate
+    }
+    
+    StateHold --> TernaryDecision: After clarification
+    
+    state PalaceConsensus {
+        [*] --> MultiAgentDeliberation
+        MultiAgentDeliberation --> BiometricAttestation
+        BiometricAttestation --> ConsensusReached
+    }
+    
+    PalaceConsensus --> Neo4jEvidence: Store claim
+    Neo4jEvidence --> ContinuousLearning
+    
+    Reject --> Baseline: Return to monitoring
+    ContinuousLearning --> Baseline: Update models
+    
+    StateHold --> MirrorStateArchive: If unresolved
+    MirrorStateArchive --> ContinuousLearning: Learning signal
+    
+    note right of State2
+        HOLD STATE
+        Preserve uncertainty
+        Generate inquiry
+        No premature collapse
+    end note
+    
+    note right of LatentReasoning
+        SUBCONSCIOUS LAYER
+        Continuous thought
+        Soft thinking
+        Latent telemetry
+    end note
+    
+    note right of GILMAnalysis
+        MEANING LAYER
+        Language + Body
+        Contextual + Uncertain
+        Cross-modal coherence
+    end note

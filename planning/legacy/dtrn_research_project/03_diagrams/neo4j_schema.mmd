@@ -1,0 +1,61 @@
+```mermaid
+graph TB
+    subgraph Core["<b>CORE NODES</b>"]
+        Research["Research Question<br/>-id<br/>-text<br/>-domain<br/>-timestamp"]
+        Agent["Agent<br/>-id<br/>-type<br/>-capability<br/>-status"]
+        Response["Response<br/>-id<br/>-content<br/>-ternary_state<br/>-confidence"]
+    end
+
+    subgraph Consensus["<b>CONSENSUS NODES</b>"]
+        State["Ternary State<br/>-value (0/1/2)<br/>-timestamp<br/>-convergence_score"]
+        Contradiction["Contradiction<br/>-description<br/>-resolution_path<br/>-status"]
+        Resolution["Resolution<br/>-consensus_text<br/>-approval_score<br/>-validated"]
+    end
+
+    subgraph Knowledge["<b>KNOWLEDGE GRAPH</b>"]
+        Concept["Concept<br/>-name<br/>-definition<br/>-domain"]
+        Pattern["Pattern<br/>-type<br/>-frequency<br/>-isomorphism_score"]
+        Citation["Citation<br/>-source<br/>-url<br/>-credibility"]
+    end
+
+    subgraph Geosemantic["<b>GEOSEMANTIC LAYER</b>"]
+        Geographic["Geographic Region<br/>-lat/lon<br/>-name<br/>-population"]
+        Semantic["Semantic Cluster<br/>-centroid<br/>-density<br/>-coherence"]
+        Consensus_Region["Consensus Region<br/>-agreement_level<br/>-diversity_index"]
+    end
+
+    %% Core Relationships
+    Agent -->|SUBMITS| Research
+    Agent -->|PROVIDES| Response
+    Response -->|HAS_STATE| State
+    Research -->|GENERATES| Contradiction
+    Contradiction -->|LEADS_TO| Resolution
+
+    %% Knowledge Relationships
+    Response -->|REFERENCES| Concept
+    Concept -->|EXHIBITS| Pattern
+    Response -->|CITES| Citation
+    Pattern -->|DETECTED_IN| Concept
+
+    %% Geosemantic Relationships
+    Agent -->|LOCATED_IN| Geographic
+    Research -->|ANALYZED_IN| Semantic
+    Semantic -->|OVERLAPS_WITH| Geographic
+    Resolution -->|VALIDATED_IN| Consensus_Region
+    Consensus_Region -->|CONTAINS| Semantic
+
+    %% Meta Relationships
+    Pattern -->|ISOMORPHIC_TO| Pattern
+    State -->|TRANSITIONS_TO| State
+    Resolution -->|SUPERSEDES| Resolution
+
+    ClassDef core fill:#e6f2ff,stroke:#0066cc,stroke-width:2
+    ClassDef consensus fill:#fff3e6,stroke:#ff9900,stroke-width:2
+    ClassDef knowledge fill:#e6ffed,stroke:#009944,stroke-width:2
+    ClassDef geo fill:#ffe6ed,stroke:#cc0055,stroke-width:2
+
+    class Research,Agent,Response core;
+    class State,Contradiction,Resolution consensus;
+    class Concept,Pattern,Citation knowledge;
+    class Geographic,Semantic,Consensus_Region geo;
+```

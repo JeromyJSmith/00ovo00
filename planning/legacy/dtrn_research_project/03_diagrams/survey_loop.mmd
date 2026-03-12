@@ -1,0 +1,80 @@
+```mermaid
+graph TB
+    Start["Research Question Submitted"]
+    
+    subgraph AIGeneration["<b>STAGE 1: AI CONSENSUS GENERATION</b>"]
+        Decompose["🔀 Morphological Decomposition"]
+        Agents["20 AI Agents Generate Responses"]
+        Contradictions["🔍 Detect Contradictions"]
+        CGT["⚡ CGT Refinement"]
+        InitialConsensus["Initial Consensus (State-2)"]
+        
+        Start --> Decompose
+        Decompose --> Agents
+        Agents --> Contradictions
+        Contradictions --> CGT
+        CGT --> InitialConsensus
+    end
+
+    subgraph SurveyDistribution["<b>STAGE 2: HUMAN VALIDATION</b>"]
+        GenerateSurvey["📋️ Generate Survey<br/>(from AI consensus)"]
+        TargetAudience["🎯 Target Audience Selection"]
+        DistributeWeb3["🌑 Web3 RSVP Distribution"]
+        CollectResponses["📊 Collect Human Responses"]
+        
+        InitialConsensus --> GenerateSurvey
+        GenerateSurvey --> TargetAudience
+        TargetAudience --> DistributeWeb3
+        DistributeWeb3 --> CollectResponses
+    end
+
+    subgraph Analysis["<b>STAGE 3: DISCREPANCY ANALYSIS</b>"]
+        Compare["⚖️ Compare AI vs Human"]
+        DetectDiscrepancy{{"Discrepancy<br/>Detected?"}}
+        AnalyzeWhy["🔬 Analyze Why Humans Disagree"]
+        
+        CollectResponses --> Compare
+        Compare --> DetectDiscrepancy
+        DetectDiscrepancy -->|"Yes"| AnalyzeWhy
+    end
+
+    subgraph Refinement["<b>STAGE 4: ITERATIVE REFINEMENT</b>"]
+        UpdateAgents["🔄 Update Agent Parameters"]
+        RefineQuestion["📝 Refine Research Question"]
+        ReRunCGT["⚡ Re-run CGT with New Context"]
+        
+        AnalyzeWhy --> UpdateAgents
+        UpdateAgents --> RefineQuestion
+        RefineQuestion --> ReRunCGT
+        ReRunCGT --> Agents
+    end
+
+    subgraph Publication["<b>STAGE 5: FINAL PUBLICATION</b>"]
+        ValidatedConsensus["✓ Validated Consensus (State-1)"]
+        PublishGRAIL["📚 Publish to GRAIL"]
+        MetaLearning["🧠 Meta-Learning Update<br/>(improve future surveys)"]
+        
+        DetectDiscrepancy -->|"No"| ValidatedConsensus
+        ValidatedConsensus --> PublishGRAIL
+        PublishGRAIL --> MetaLearning
+    end
+
+    Output["Final Research Output<br/>+ Survey Data<br/>+ Reasoning Chain"]
+    MetaLearning --> Output
+
+    %% Feedback Loop
+    MetaLearning -.->|"Improve"| Decompose
+    PublishGRAIL -.->|"Knowledge Base"| Agents
+
+    ClassDef ai fill:#ffcccc,stroke:#cc0000,stroke-width:2
+    ClassDef survey fill:#ccccff,stroke:#0000cc,stroke-width:2
+    ClassDef analysis fill:#ffffcc,stroke:#ffaa00,stroke-width:2
+    ClassDef refinement fill:#ffccff,stroke:#cc00cc,stroke-width:2
+    ClassDef publication fill:#ccffcc,stroke:#00cc00,stroke-width:3
+
+    class Decompose,Agents,Contradictions,CGT,InitialConsensus ai;
+    class GenerateSurvey,TargetAudience,DistributeWeb3,CollectResponses survey;
+    class Compare,DetectDiscrepancy,AnalyzeWhy analysis;
+    class UpdateAgents,RefineQuestion,ReRunCGT refinement;
+    class ValidatedConsensus,PublishGRAIL,MetaLearning publication;
+```

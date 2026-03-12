@@ -1,0 +1,76 @@
+```mermaid
+graph TB
+    subgraph Domain1["<b>DOMAIN 1: Physics</b>"]
+        P1["Wave-Particle Duality"]
+        P2["Quantum Superposition"]
+        P3["Measurement Collapse"]
+        Pattern1["🎠 Pattern:<br/>State ambiguity<br/>until observation"]
+    end
+
+    subgraph Domain2["<b>DOMAIN 2: Cognitive Science</b>"]
+        C1["Dual Process Theory"]
+        C2["Cognitive Dissonance"]
+        C3["Decision Making"]
+        Pattern2["🎠 Pattern:<br/>Mental state<br/>ambiguity until choice"]
+    end
+
+    subgraph Domain3["<b>DOMAIN 3: Game Theory</b>"]
+        G1["Nash Equilibrium"]
+        G2["Mixed Strategies"]
+        G3["Convergence"]
+        Pattern3["🎠 Pattern:<br/>Strategic ambiguity<br/>until commitment"]
+    end
+
+    subgraph Detector["<b>ISOMORPHISM DETECTOR (Graph Algorithms)</b>"]
+        SubgraphMatch["🔍 Subgraph Isomorphism<br/>(VF2 Algorithm)"]
+        EmbeddingCompare["📊 Pattern Embedding<br/>(GNN)"]
+        SimilarityScore["⚖️ Structural Similarity<br/>(Graph Edit Distance)"]
+    end
+
+    subgraph MetaPattern["<b>META-PATTERN DISCOVERY</b>"]
+        Abstract["🧩 Abstract Pattern:<br/>'Ternary state collapse<br/>through observation/choice'"]
+        RomeConnection["🌀 ROME's INSIGHT:<br/>This IS ternary logic!<br/>State-2 → State-1/0<br/>through interaction"]
+        CrossDomain["🌉 Cross-Domain<br/>Applicability"]
+    end
+
+    P1 & P2 & P3 --> Pattern1
+    C1 & C2 & C3 --> Pattern2
+    G1 & G2 & G3 --> Pattern3
+
+    Pattern1 --> SubgraphMatch
+    Pattern2 --> SubgraphMatch
+    Pattern3 --> SubgraphMatch
+
+    SubgraphMatch --> EmbeddingCompare
+    EmbeddingCompare --> SimilarityScore
+    SimilarityScore --> Abstract
+    Abstract --> RomeConnection
+    RomeConnection --> CrossDomain
+
+    subgraph Application["<b>DTRN APPLICATION</b>"]
+        Detect["Detect when research<br/>questions map to known<br/>meta-patterns"]
+        Accelerate["Accelerate consensus<br/>by leveraging existing<br/>solutions"]
+        Synthesize["Synthesize knowledge<br/>across domains"]
+    end
+
+    CrossDomain --> Detect
+    Detect --> Accelerate
+    Accelerate --> Synthesize
+
+    %% Example Isomorphisms
+    note1["<b>Example Isomorphisms Detected:</b><br/>• Turing Test ≅ Dimmer Switch<br/>• Turning ≅ Tuning<br/>• Rotation ≅ Vibration<br/>• R sound ≅ N sound<br/>• State-2 ≅ Superposition"]
+    
+    RomeConnection -.-> note1
+
+    ClassDef domain fill:#e6f2ff,stroke:#0066cc,stroke-width:2
+    ClassDef detector fill:#fff3e6,stroke:#ff9900,stroke-width:2
+    ClassDef meta fill:#e6ffed,stroke:#009944,stroke-width:3
+    ClassDef application fill:#ffe6ed,stroke:#cc0055,stroke-width:2
+    ClassDef note fill:#ffffcc,stroke:#ffaa00,stroke-width:1
+
+    class P1,P2,P3,C1,C2,C3,G1,G2,G3,Pattern1,Pattern2,Pattern3 domain;
+    class SubgraphMatch,EmbeddingCompare,SimilarityScore detector;
+    class Abstract,RomeConnection,CrossDomain meta;
+    class Detect,Accelerate,Synthesize application;
+    class note1 note;
+```
